@@ -60,7 +60,7 @@
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _app = __webpack_require__(196);
+	var _app = __webpack_require__(195);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
@@ -22660,8 +22660,7 @@
 
 /***/ },
 /* 194 */,
-/* 195 */,
-/* 196 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

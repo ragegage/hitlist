@@ -56,11 +56,11 @@
 	
 	var _redux = __webpack_require__(179);
 	
-	var _reducers = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./reducers\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _reducers = __webpack_require__(194);
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _app = __webpack_require__(195);
+	var _app = __webpack_require__(196);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
@@ -22659,8 +22659,107 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 194 */,
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _redux = __webpack_require__(179);
+	
+	var _actions = __webpack_require__(195);
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	var hitlist = (0, _redux.combineReducers)({
+	  cities: cities,
+	  flights: flights
+	});
+	
+	var cities = function cities() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case _actions.ADD_CITY:
+	      return [].concat(_toConsumableArray(state.cities), [{ name: action.name }]);
+	    case _actions.REMOVE_CITY:
+	      return state.cities.filter(function (el) {
+	        return id !== action.cityId;
+	      });
+	    default:
+	      return state;
+	  }
+	};
+	
+	var flights = function flights() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case _actions.RECEIVE_FLIGHTS:
+	      return _defineProperty({}, action.cityId, action.flights);
+	    default:
+	      return state;
+	  }
+	};
+	
+	exports.default = hitlist;
+
+/***/ },
 /* 195 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.AddCity = AddCity;
+	exports.RemoveCity = RemoveCity;
+	var ADD_CITY = exports.ADD_CITY = 'ADD_CITY';
+	var REMOVE_CITY = exports.REMOVE_CITY = 'REMOVE_CITY';
+	
+	function AddCity(name) {
+	  return { type: ADD_CITY, name: name };
+	}
+	
+	function RemoveCity(cityId) {
+	  return { type: REMOVE_CITY, cityId: cityId };
+	}
+	
+	var RECEIVE_FLIGHTS = exports.RECEIVE_FLIGHTS = 'RECEIVE_FLIGHTS';
+	
+	// let nextTodoId = 0
+	// export const addTodo = (text) => {
+	//   return {
+	//     type: 'ADD_TODO',
+	//     id: nextTodoId++,
+	//     text
+	//   }
+	// }
+	//
+	// export const setVisibilityFilter = (filter) => {
+	//   return {
+	//     type: 'SET_VISIBILITY_FILTER',
+	//     filter
+	//   }
+	// }
+	//
+	// export const toggleTodo = (id) => {
+	//   return {
+	//     type: 'TOGGLE_TODO',
+	//     id
+	//   }
+	// }
+
+/***/ },
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22673,13 +22772,27 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _map_container = __webpack_require__(197);
+	
+	var _map_container2 = _interopRequireDefault(_map_container);
+	
+	var _flight_container = __webpack_require__(199);
+	
+	var _flight_container2 = _interopRequireDefault(_flight_container);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var App = function App() {
 	  return _react2.default.createElement(
 	    'div',
-	    null,
-	    'i am a coding god'
+	    { className: 'main' },
+	    _react2.default.createElement(
+	      'h1',
+	      null,
+	      'i am a coding god'
+	    ),
+	    _react2.default.createElement(_map_container2.default, null),
+	    _react2.default.createElement(_flight_container2.default, null)
 	  );
 	};
 	
@@ -22782,6 +22895,148 @@
 	// )
 	//
 	// export default Footer
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _reactRedux = __webpack_require__(172);
+	
+	var _map = __webpack_require__(198);
+	
+	var _map2 = _interopRequireDefault(_map);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  return {
+	    // needs list of cities
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    // needs way to update cities displayed
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_map2.default);
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Map = function (_React$Component) {
+	  _inherits(Map, _React$Component);
+	
+	  function Map() {
+	    _classCallCheck(this, Map);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Map).apply(this, arguments));
+	  }
+	
+	  _createClass(Map, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      //set up map
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { id: 'map' },
+	        'this is map'
+	      );
+	    }
+	  }]);
+	
+	  return Map;
+	}(_react2.default.Component);
+	
+	exports.default = Map;
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _reactRedux = __webpack_require__(172);
+	
+	var _flight_list = __webpack_require__(200);
+	
+	var _flight_list2 = _interopRequireDefault(_flight_list);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	  return {
+	    // needs list of flights
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    //
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_flight_list2.default);
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (props) {
+	  return _react2.default.createElement(
+	    'ul',
+	    { className: 'flight-list' },
+	    'this is flight list'
+	  );
+	};
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }
 /******/ ]);

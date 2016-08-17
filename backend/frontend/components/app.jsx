@@ -1,8 +1,12 @@
 import React from 'react'
+import MapContainer from './map_container'
+import FlightContainer from './flight_container'
 
 const App = () => (
-  <div>
-    i am a coding god
+  <div className='main'>
+    <h1>this is hitlist app</h1>
+    <MapContainer/>
+    <FlightContainer/>
   </div>
 )
 

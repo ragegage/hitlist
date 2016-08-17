@@ -1,24 +1,30 @@
 import { combineReducers } from 'redux'
-// import visibilityFilter from './visibilityFilter'
+import { ADD_CITY, REMOVE_CITY, RECEIVE_FLIGHTS } from '../actions'
 
-const initialState = {
-  cities: [ ]
-}
+const hitlist = combineReducers({
+  cities,
+  flights
+})
 
-const hitlist = function (state = initialState, action){
+const cities = (state = [], action) => {
   switch (action.type){
   case ADD_CITY:
-    return Object.assign({}, state, {
-      cities: [...state.cities,
-        {action.name}
+    return [...state.cities,
+        {name: action.name}
       ]
-    })
   case REMOVE_CITY:
-    return Object.assign({}, state, {
-      cities: state.cities.filter((el, idx) => idx !== action.idx)
-    })
+    return state.cities.filter((el) => id !== action.cityId)
   default:
     return state
+  }
+}
+
+const flights = (state = {}, action) => {
+  switch (action.type){
+    case RECEIVE_FLIGHTS:
+      return {[action.cityId]: action.flights}
+    default:
+      return state
   }
 }
 

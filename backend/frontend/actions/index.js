@@ -5,9 +5,13 @@ export function AddCity (name) {
   return { type: ADD_CITY, name: name }
 }
 
-export function RemoveCity (idx) {
-  return { type: REMOVE_CITY, idx: idx }
+export function RemoveCity (cityId) {
+  return { type: REMOVE_CITY, cityId }
 }
+
+
+export const RECEIVE_FLIGHTS = 'RECEIVE_FLIGHTS'
+
 
 // let nextTodoId = 0
 // export const addTodo = (text) => {

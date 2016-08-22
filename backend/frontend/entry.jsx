@@ -2,10 +2,11 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import hitlist from './reducers'
+import { RootReducer } from './reducers'
 import App from './components/app'
+import MasterMiddleware from './middleware'
 
-let store = createStore(hitlist)
+let store = createStore(RootReducer, MasterMiddleware)
 
 render(
   <Provider store={store}>
@@ -13,3 +14,5 @@ render(
   </Provider>,
   document.getElementById('root')
 )
+
+window.store = store

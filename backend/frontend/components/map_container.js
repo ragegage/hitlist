@@ -1,12 +1,15 @@
 import { connect } from 'react-redux'
 import Map from './map'
+import { requestCities, requestFlights } from '../actions'
 
 const mapStateToProps = (state, ownProps) => ({
-  // needs list of cities
+  cities: state.cities
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // needs way to update cities displayed
+  requestCities: () => dispatch(requestCities()),
+  requestFlights: cityId => () => dispatch(requestFlights(cityId))
+  // needs way to query flights for a given city
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(Map)
+export default connect(mapStateToProps, mapDispatchToProps)(Map)

@@ -3,7 +3,9 @@ class FlightsController < ApplicationController
 
   # GET /flights
   def index
-    @flights = Flight.all
+    @flights = Flight.where(from_city_id: params[:city_id])
+
+    # debugger
 
     render json: @flights
   end

@@ -58,21 +58,25 @@
 	
 	var _reducers = __webpack_require__(194);
 	
-	var _reducers2 = _interopRequireDefault(_reducers);
-	
 	var _app = __webpack_require__(196);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
+	var _middleware = __webpack_require__(203);
+	
+	var _middleware2 = _interopRequireDefault(_middleware);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var store = (0, _redux.createStore)(_reducers2.default);
+	var store = (0, _redux.createStore)(_reducers.RootReducer, _middleware2.default);
 	
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
 	  _react2.default.createElement(_app2.default, null)
 	), document.getElementById('root'));
+	
+	window.store = store;
 
 /***/ },
 /* 1 */
@@ -22667,49 +22671,25 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.RootReducer = undefined;
 	
 	var _redux = __webpack_require__(179);
 	
-	var _actions = __webpack_require__(195);
+	var _cities = __webpack_require__(201);
 	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	var _cities2 = _interopRequireDefault(_cities);
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	var _flights = __webpack_require__(202);
 	
-	var hitlist = (0, _redux.combineReducers)({
-	  cities: cities,
-	  flights: flights
+	var _flights2 = _interopRequireDefault(_flights);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// reducers
+	var RootReducer = exports.RootReducer = (0, _redux.combineReducers)({
+	  cities: _cities2.default,
+	  flights: _flights2.default
 	});
-	
-	var cities = function cities() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case _actions.ADD_CITY:
-	      return [].concat(_toConsumableArray(state.cities), [{ name: action.name }]);
-	    case _actions.REMOVE_CITY:
-	      return state.cities.filter(function (el) {
-	        return id !== action.cityId;
-	      });
-	    default:
-	      return state;
-	  }
-	};
-	
-	var flights = function flights() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case _actions.RECEIVE_FLIGHTS:
-	      return _defineProperty({}, action.cityId, action.flights);
-	    default:
-	      return state;
-	  }
-	};
-	
-	exports.default = hitlist;
 
 /***/ },
 /* 195 */
@@ -22720,20 +22700,54 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.AddCity = AddCity;
-	exports.RemoveCity = RemoveCity;
 	var ADD_CITY = exports.ADD_CITY = 'ADD_CITY';
 	var REMOVE_CITY = exports.REMOVE_CITY = 'REMOVE_CITY';
 	
-	function AddCity(name) {
-	  return { type: ADD_CITY, name: name };
-	}
+	var addCity = exports.addCity = function addCity(city) {
+	  return {
+	    type: ADD_CITY,
+	    city: city
+	  };
+	};
 	
-	function RemoveCity(cityId) {
-	  return { type: REMOVE_CITY, cityId: cityId };
-	}
+	var removeCity = exports.removeCity = function removeCity(cityId) {
+	  return {
+	    type: REMOVE_CITY,
+	    cityId: cityId
+	  };
+	};
 	
+	var REQUEST_CITIES = exports.REQUEST_CITIES = 'REQUEST_CITIES';
+	var RECEIVE_CITIES = exports.RECEIVE_CITIES = 'RECEIVE_CITIES';
+	
+	var requestCities = exports.requestCities = function requestCities() {
+	  return { type: REQUEST_CITIES };
+	};
+	
+	var receiveCities = exports.receiveCities = function receiveCities(cities) {
+	  return {
+	    type: RECEIVE_CITIES,
+	    cities: cities
+	  };
+	};
+	
+	var REQUEST_FLIGHTS = exports.REQUEST_FLIGHTS = 'REQUEST_FLIGHTS';
 	var RECEIVE_FLIGHTS = exports.RECEIVE_FLIGHTS = 'RECEIVE_FLIGHTS';
+	
+	var requestFlights = exports.requestFlights = function requestFlights(cityId) {
+	  return {
+	    type: REQUEST_FLIGHTS,
+	    cityId: cityId
+	  };
+	};
+	
+	var receiveFlights = exports.receiveFlights = function receiveFlights(flights) {
+	  return {
+	    type: RECEIVE_FLIGHTS,
+	    flights: flights,
+	    cityId: flights.length > 0 ? flights[0].from_city_id : undefined
+	  };
+	};
 	
 	// let nextTodoId = 0
 	// export const addTodo = (text) => {
@@ -22789,7 +22803,7 @@
 	    _react2.default.createElement(
 	      'h1',
 	      null,
-	      'i am a coding god'
+	      'this is hitlist app'
 	    ),
 	    _react2.default.createElement(_map_container2.default, null),
 	    _react2.default.createElement(_flight_container2.default, null)
@@ -22912,17 +22926,27 @@
 	
 	var _map2 = _interopRequireDefault(_map);
 	
+	var _actions = __webpack_require__(195);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
-	    // needs list of cities
+	    cities: state.cities
 	  };
 	};
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    // needs way to update cities displayed
+	    requestCities: function requestCities() {
+	      return dispatch((0, _actions.requestCities)());
+	    },
+	    requestFlights: function requestFlights(cityId) {
+	      return function () {
+	        return dispatch((0, _actions.requestFlights)(cityId));
+	      };
+	    }
+	    // needs way to query flights for a given city
 	  };
 	};
 	
@@ -22965,15 +22989,45 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      //set up map
+	      this.props.requestCities();
+	      this.setupMap();
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { id: 'map' },
-	        'this is map'
-	      );
+	      this.placeMarkers();
+	      return _react2.default.createElement('div', { id: 'map' });
+	    }
+	  }, {
+	    key: 'placeMarkers',
+	    value: function placeMarkers() {
+	      var _this2 = this;
+	
+	      this.markers = this.markers || [];
+	      this.markers.forEach(function (marker) {
+	        return marker.setMap(null);
+	      });
+	      this.markers = [];
+	      this.markers = this.props.cities.map(function (city) {
+	        var marker = new google.maps.Marker({
+	          position: { lat: city.lat, lng: city.lng },
+	          map: _this2.map,
+	          title: city.name
+	        });
+	        // location -> city.lat/lng
+	        // onhover -> city.name
+	        // onclick -> this.props.requestFlights(city.id)
+	        marker.addListener('click', _this2.props.requestFlights(city.id));
+	        return marker;
+	      });
+	    }
+	  }, {
+	    key: 'setupMap',
+	    value: function setupMap() {
+	      this.map = new google.maps.Map(document.getElementById('map'), {
+	        center: { lat: -0, lng: 0 },
+	        zoom: 1
+	      });
 	    }
 	  }]);
 	
@@ -23003,6 +23057,7 @@
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
 	    // needs list of flights
+	    flights: state.flights
 	  };
 	};
 	
@@ -23024,11 +23079,22 @@
 	  value: true
 	});
 	
-	exports.default = function (props) {
+	exports.default = function (_ref) {
+	  var flights = _ref.flights;
+	
 	  return _react2.default.createElement(
 	    'ul',
 	    { className: 'flight-list' },
-	    'this is flight list'
+	    'this is flight list',
+	    flights.map(function (flight) {
+	      return _react2.default.createElement(
+	        'li',
+	        null,
+	        flight.from_city_id,
+	        ' to ',
+	        flight.to_city_id
+	      );
+	    })
 	  );
 	};
 	
@@ -23037,6 +23103,156 @@
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _actions = __webpack_require__(195);
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	exports.default = function () {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case _actions.ADD_CITY:
+	      return [].concat(_toConsumableArray(state), [action.city]);
+	    case _actions.REMOVE_CITY:
+	      return state.cities.filter(function (el) {
+	        return id !== action.cityId;
+	      });
+	    case _actions.RECEIVE_CITIES:
+	      return action.cities;
+	    default:
+	      return state;
+	  }
+	};
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _actions = __webpack_require__(195);
+	
+	exports.default = function () {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case _actions.RECEIVE_FLIGHTS:
+	      return action.flights;
+	    default:
+	      return state;
+	  }
+	};
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _redux = __webpack_require__(179);
+	
+	var _api_middleware = __webpack_require__(204);
+	
+	var _api_middleware2 = _interopRequireDefault(_api_middleware);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = (0, _redux.applyMiddleware)(_api_middleware2.default);
+
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _actions = __webpack_require__(195);
+	
+	var _util = __webpack_require__(205);
+	
+	exports.default = function (_ref) {
+	  var getState = _ref.getState;
+	  var dispatch = _ref.dispatch;
+	  return function (next) {
+	    return function (action) {
+	      var citiesSuccess = function citiesSuccess(data) {
+	        return dispatch((0, _actions.receiveCities)(data));
+	      };
+	      var flightsSuccess = function flightsSuccess(data) {
+	        return dispatch((0, _actions.receiveFlights)(data));
+	      };
+	      switch (action.type) {
+	        case _actions.REQUEST_CITIES:
+	          (0, _util.fetchCities)(citiesSuccess);
+	          break;
+	        case _actions.REQUEST_FLIGHTS:
+	          (0, _util.fetchFlights)(action.cityId, flightsSuccess);
+	          break;
+	        default:
+	          return next(action);
+	      }
+	    };
+	  };
+	};
+
+/***/ },
+/* 205 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var fetchCities = exports.fetchCities = function fetchCities(success) {
+	  var request = new Request('http://localhost:3000/cities', {
+	    method: 'GET',
+	    mode: 'cors',
+	    headers: new Headers({
+	      'Content-Type': 'application/json'
+	    })
+	  });
+	  fetch(request).then(function (r) {
+	    return r.json();
+	  }).then(success);
+	};
+	
+	var fetchFlights = exports.fetchFlights = function fetchFlights(cityId, success) {
+	  var request = new Request('http://localhost:3000/flights?city_id=' + cityId, {
+	    method: 'GET',
+	    mode: 'cors',
+	    headers: new Headers({
+	      'Content-Type': 'application/json'
+	    })
+	  });
+	  fetch(request).then(function (r) {
+	    return r.json();
+	  }).then(success);
+	};
 
 /***/ }
 /******/ ]);
